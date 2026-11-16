@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUST | Smart Campus Venue & Space Allocation</title>
+    <link rel="stylesheet" href="landing.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="badge-must">MUST</span>
+                <div class="logo-text">
+                    <strong>Space & Venue Portal</strong>
+                    <small>Mbeya University of Science and Technology</small>
+                </div>
+            </div>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#venues">Campus Spaces</a>
+                <a href="#workflow">How It Works</a>
+                <a href="dashboard.html" class="btn btn-gold">Launch Portal</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <span class="pill">Academic Year 2026/2027 • Campus Scheduling</span>
+                <h1>Eliminate Lecture Hall Clashes Across MUST Campus</h1>
+                <p>
+                    A centralized digital platform enabling lecturers, instructors, and estate administrators 
+                    to discover available lecture rooms, laboratories, and workshops—and allocate spaces in real time.
+                </p>
+                <div class="hero-actions">
+                    <a href="dashboard.html?role=lecturer" class="btn btn-gold btn-lg">Request a Venue (Lecturer)</a>
+                    <a href="dashboard.html?role=admin" class="btn btn-outline btn-lg">Manage Spaces (Admin)</a>
+                </div>
+            </div>
+            <div class="hero-stats-card">
+                <h3>Live Campus Overview</h3>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalVenuesCount">4+</span>
+                        <span class="stat-label">Registered Halls & Labs</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">0%</span>
+                        <span class="stat-label">Double-Booking Conflicts</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Real-Time Availability</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">Instant</span>
+                        <span class="stat-label">Admin Approval Flow</span>
+                    </div>
+                </div>
+                <div class="hero-note">
+                    <strong>Automatic Clash Detection:</strong> Prevents overlapping bookings for the same hall, date, and time window.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section id="features" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Built for University Operations</h2>
+                <p>Streamlining space management for CoICT, Engineering, Science, and Administration blocks.</p>
+            </div>
+            <div class="cards-grid">
+                <div class="feature-card">
+                    <div class="icon">📅</div>
+                    <h3>Zero-Conflict Scheduling</h3>
+                    <p>Built-in backend validation checks existing approved and pending bookings before accepting any new venue request.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">🏛️</div>
+                    <h3>Complete Venue Directory</h3>
+                    <p>Inspect seating capacities, projector availability, air conditioning, and lab equipment before requesting a room.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon">⚡</div>
+                    <h3>Instant Admin Controls</h3>
+                    <p>Campus administrators can add new halls, flag rooms under maintenance, and approve or reject requests in one click.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Campus Venues (Dynamically loaded from SQLite API) -->
+    <section id="venues" class="section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured MUST Campus Venues</h2>
+                <p>Live availability pulled directly from the university database.</p>
+            </div>
+            <div id="featuredVenuesGrid" class="cards-grid">
+                <!-- Populated dynamically via fetch('/api/venues') -->
+            </div>
+            <div class="center-btn">
+                <a href="dashboard.html" class="btn btn-primary">View Full Schedule & Book Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="workflow" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2>How Allocation Works</h2>
+            </div>
+            <div class="steps-grid">
+                <div class="step">
+                    <span class="step-num">1</span>
+                    <h4>Check Availability</h4>
+                    <p>Browse available halls and labs matching your class size and equipment needs.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">2</span>
+                    <h4>Submit Request</h4>
+                    <p>Enter your course code, date, and time slot. The system verifies there are no clashes.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">3</span>
+                    <h4>Admin Approval</h4>
+                    <p>The timetable coordinator reviews and approves the allocation onto the master schedule.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div>
+                <strong>MUST Venue & Space Allocation System</strong>
+                <p>Mbeya University of Science and Technology • P.O. Box 131, Mbeya, Tanzania</p>
+            </div>
+            <div>
+                <a href="dashboard.html">Open Allocation Dashboard →</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch live venues from Express backend to display on the landing page
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch('/api/venues');
+                if (!res.ok) return;
+                const venues = await res.json();
+
+                document.getElementById('totalVenuesCount').textContent = venues.length;
+
+                const grid = document.getElementById('featuredVenuesGrid');
+                grid.innerHTML = '';
+
+                venues.slice(0, 3).forEach(v => {
+                    const statusClass = v.status === 'Available' ? 'status-ok' : 'status-warn';
+                    grid.innerHTML += `
+                        <div class="venue-card">
+                            <div class="venue-top">
+                                <h3>${v.name}</h3>
+                                <span class="status-pill ${statusClass}">${v.status}</span>
+                            </div>
+                            <p class="venue-building">📍 ${v.building}</p>
+                            <p class="venue-cap">👥 Capacity: <strong>${v.capacity} Seats</strong></p>
+                            <p class="venue-fac">🛠️ ${v.facilities}</p>
+                        </div>
+                    `;
+                });
+            } catch (err) {
+                console.log('Server not reachable yet for live preview.');
+            }
+        });
+    </script>
+</body>
+</html>

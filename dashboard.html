@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUST | Campus Venue & Space Allocation</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="brand">
+            <h1>MUST Venue & Space Allocation</h1>
+            <span>Mbeya University of Science and Technology</span>
+        </div>
+        <div class="role-switcher">
+            <label for="roleSelect">Active Role:</label>
+            <select id="roleSelect" onchange="switchRole()">
+                <option value="lecturer">Lecturer / Instructor</option>
+                <option value="admin">Campus Administrator</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Alert Notification Banner -->
+        <div id="alertBox" class="alert hidden"></div>
+
+        <!-- LECTURER SECTION: Request a Venue -->
+        <section id="lecturerSection" class="card">
+            <h2>Request Campus Venue / Lab</h2>
+            <form id="bookingForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Select Venue *</label>
+                        <select id="bookingVenueId" required></select>
+                    </div>
+                    <div class="form-group">
+                        <label>Lecturer / Instructor Name *</label>
+                        <input type="text" id="lecturerName" placeholder="e.g., Dr. J. Mwakalinga" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Course Code / Event *</label>
+                        <input type="text" id="courseCode" placeholder="e.g., CS 3102 - Database Systems" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Date *</label>
+                        <input type="date" id="bookingDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Time *</label>
+                        <input type="time" id="startTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label>End Time *</label>
+                        <input type="time" id="endTime" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Purpose / Special Requirements</label>
+                    <input type="text" id="purpose" placeholder="e.g., Practical exam, needs projector and 60 PCs">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit Space Request</button>
+            </form>
+        </section>
+
+        <!-- ADMIN SECTION: Add or Edit Campus Venue (CRUD Create/Update) -->
+        <section id="adminSection" class="card hidden">
+            <h2 id="venueFormTitle">Add New Campus Venue</h2>
+            <form id="venueForm">
+                <input type="hidden" id="editVenueId">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Venue Name *</label>
+                        <input type="text" id="venueName" placeholder="e.g., Lecture Theatre 1" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Building / Block *</label>
+                        <input type="text" id="venueBuilding" placeholder="e.g., CoICT Block" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Seating Capacity *</label>
+                        <input type="number" id="venueCapacity" placeholder="e.g., 150" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="venueStatus">
+                            <option value="Available">Available</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Reserved">Reserved</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Facilities Available</label>
+                    <input type="text" id="venueFacilities" placeholder="e.g., Projector, AC, Smartboard, Wi-Fi">
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" id="saveVenueBtn">Add Venue</button>
+                    <button type="button" class="btn btn-secondary hidden" id="cancelEditBtn" onclick="resetVenueForm()">Cancel Edit</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- ALLOCATION REQUESTS TABLE (Read, Approve/Reject, Delete) -->
+        <section class="card">
+            <h2>Venue Allocation Schedule & Requests</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Venue</th>
+                            <th>Lecturer & Course</th>
+                            <th>Date & Time</th>
+                            <th>Purpose</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookingsTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- CAMPUS VENUES DIRECTORY TABLE (Read, Edit, Delete) -->
+        <section class="card">
+            <h2>MUST Campus Venues Directory</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Venue Name</th>
+                            <th>Building</th>
+                            <th>Capacity</th>
+                            <th>Facilities</th>
+                            <th>Status</th>
+                            <th class="admin-only hidden">Admin Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="venuesTableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
